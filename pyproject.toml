@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "example-project"
+version = "1.0"
+requires-python = ">= 3.14"
+classifiers = ["Private :: Do Not Upload"]
+dependencies = [
+    "pytest",
+    "pytest-html",
+    "selenium",
+    "tox",
+]
+
+[dependency-groups]
+lint = [
+    "packaging",
+    "ruff",
+    "validate-pyproject",
+]
+
+[tool.setuptools]
+packages = []
+
+[tool.pytest]
+addopts = ["-s", "-v", "--html=report/report.html"]
+
+[tool.ruff]
+line-length = 120
+respect-gitignore = true
+target-version = "py314"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "PT", "RUF", "TID", "UP", "W"]
+extend-ignore = []
+fixable = ["ALL"]
+
+[tool.ruff.format]
+docstring-code-line-length = 120
+docstring-code-format = true
