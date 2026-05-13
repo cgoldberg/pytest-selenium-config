@@ -1,6 +1,6 @@
 # pytest-selenium-config
 
-## pytest project configuration for Selenium WebDriver tests
+### pytest project configuration for Selenium WebDriver tests
 
 - Copyright (c) 2026 [Corey Goldberg](https://github.com/cgoldberg)
 
@@ -22,5 +22,3 @@
     </td>
   </tr>
 </table>
-
-----
