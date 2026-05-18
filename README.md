@@ -21,13 +21,9 @@ This configuration provides a setup for web UI testing:
 
 ## Required Packages
 
-- selenium
-- pytest
-- pytest-html
-
-```bash
-pip install pytest selenium pytest-html
-```
+- [selenium](https://pypi.org/project/selenium)
+- [pytest](https://pypi.org/project/pytest)
+- [pytest-html](https://pypi.org/project/pytest-html)
 
 ---
 
@@ -40,34 +36,47 @@ pip install pytest selenium pytest-html
 
 #### 2. Test Starts
 
-- Chrome launched
+- Browser launched
 - Browser maximized
 
 #### 3. Test Executes
 
-- Selenium interactions occur
+- Selenium interactions
 
 #### 4. Test Outcome
 
 - Success
-    - Browser closes
+    - Browser closed
+    - Driver quit
 - Failure
     - Logging captured
     - Screenshot captured and attached to HTML report
-    - Browser closes
+    - Browser closed
+    - Driver quit
 
 ---
 
 ## Example Usage
 
-#### Run tests
+#### Install dependencies:
 
-```bash
+```
+pip install -e .
+```
+
+#### Add tests:
+
+i.e. `test_example.py`
+
+
+#### Run tests:
+
+```
 pytest
 ```
 
-#### Run tests in headless mode
+#### Run tests in headless mode:
 
-```bash
+```
 pytest --headless
 ```
