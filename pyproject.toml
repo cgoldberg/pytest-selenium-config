@@ -16,9 +16,8 @@ dependencies = [
 
 [dependency-groups]
 lint = [
-    "packaging",
     "ruff",
-    "validate-pyproject",
+    "validate-pyproject[all]",
 ]
 
 [tool.setuptools]
@@ -33,9 +32,14 @@ respect-gitignore = true
 target-version = "py314"
 
 [tool.ruff.lint]
-select = ["E", "F", "I", "PT", "RUF", "TID", "UP", "W"]
-extend-ignore = []
+select = ["ALL"]
+ignore = [
+    "ANN", "COM812", "D",
+]
 fixable = ["ALL"]
+
+[tool.ruff.lint.per-file-ignores]
+"**/conftest.py" = ["ARG001"]
 
 [tool.ruff.format]
 docstring-code-line-length = 120
