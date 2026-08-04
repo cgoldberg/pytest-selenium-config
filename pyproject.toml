@@ -24,7 +24,7 @@ lint = [
 packages = []
 
 [tool.pytest]
-addopts = ["-s", "-v", "--html=report/report.html"]
+addopts = ["-v", "--html=report/report.html"]
 
 [tool.ruff]
 line-length = 120
