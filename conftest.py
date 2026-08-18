@@ -1,8 +1,8 @@
 # Copyright (c) 2026 Corey Goldberg
 # SPDX-License-Identifier: MIT
 
+"""pytest configuration and fixtures."""
 
-import logging
 import os
 import re
 import shutil
@@ -15,14 +15,31 @@ REPORT_TITLE = "Test Results"
 CHROME_VERSION = "stable"
 
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="[%(asctime)s] %(levelname)s - %(message)s",
-)
+# -----------------------------------------------------------------------------
+# fixtures
+# -----------------------------------------------------------------------------
 
 
-# use Chrome-for-Testing instead of system Chrome unless overridden
-os.environ.setdefault("SE_FORCE_BROWSER_DOWNLOAD", "true")
+@pytest.fixture
+def browser_options(request):
+    options = webdriver.ChromeOptions()
+    options.browser_version = CHROME_VERSION
+    if request.config.getoption("--headless"):
+        options.add_argument("--headless")
+    return options
+
+
+@pytest.fixture
+def driver(browser_options):
+    driver = webdriver.Chrome(options=browser_options)
+    driver.maximize_window()
+    yield driver
+    driver.quit()
+
+
+# -----------------------------------------------------------------------------
+# pytest configuration
+# -----------------------------------------------------------------------------
 
 
 def pytest_addoption(parser):
@@ -32,6 +49,33 @@ def pytest_addoption(parser):
 def pytest_sessionstart(session):
     screenshots_dir = Path(__file__).resolve().parent / "report" / "screenshots"
     shutil.rmtree(screenshots_dir, ignore_errors=True)
+
+
+# -----------------------------------------------------------------------------
+# selenium configuration
+# -----------------------------------------------------------------------------
+
+
+# Use Chrome-for-Testing instead of any system-installed Chrome
+# unless overridden in environment.
+os.environ.setdefault("SE_FORCE_BROWSER_DOWNLOAD", "true")
+
+
+# -----------------------------------------------------------------------------
+# pytest-html reporting
+# -----------------------------------------------------------------------------
+
+
+def pytest_html_results_table_header(cells):
+    cells.pop()
+
+
+def pytest_html_results_table_row(report, cells):
+    cells.pop()
+
+
+def pytest_html_report_title(report):
+    report.title = REPORT_TITLE
 
 
 @pytest.hookimpl(hookwrapper=True)
@@ -51,32 +95,3 @@ def pytest_runtest_makereport(item, call):
                 driver.save_screenshot(path)
                 extras.append(pytest_html.extras.png(path))
         report.extras = extras
-
-
-def pytest_html_results_table_header(cells):
-    cells.pop()
-
-
-def pytest_html_results_table_row(report, cells):
-    cells.pop()
-
-
-def pytest_html_report_title(report):
-    report.title = REPORT_TITLE
-
-
-@pytest.fixture(scope="session")
-def browser_options(request):
-    options = webdriver.ChromeOptions()
-    options.browser_version = CHROME_VERSION
-    if request.config.getoption("--headless"):
-        options.add_argument("--headless")
-    return options
-
-
-@pytest.fixture
-def driver(browser_options):
-    driver = webdriver.Chrome(options=browser_options)
-    driver.maximize_window()
-    yield driver
-    driver.quit()

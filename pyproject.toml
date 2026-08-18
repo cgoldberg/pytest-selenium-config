@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "example-project"
-version = "1.0"
+version = "1.0.0"
 requires-python = ">= 3.14"
 classifiers = ["Private :: Do Not Upload"]
 dependencies = [
@@ -24,18 +24,25 @@ lint = [
 packages = []
 
 [tool.pytest]
-addopts = ["-v", "--html=report/report.html"]
+pythonpath = ["."]
+testpaths = ["."]
+addopts = [
+    "-v",
+    "--tb=short",
+    "--html=report/report.html"
+]
 
 [tool.ruff]
-line-length = 120
+line-length = 100
 respect-gitignore = true
 target-version = "py314"
 
 [tool.ruff.lint]
 select = ["ALL"]
 ignore = [
-    "ANN", "COM812", "D", "EM101", "EM102", "FBT",
-    "PLR", "S101", "TRY003", "TRY400"
+    "ANN", "COM812", "D", "EM101",
+    "EM102", "FBT", "PLR", "S101",
+    "TRY003", "TRY400"
 ]
 fixable = ["ALL"]
 
@@ -43,5 +50,5 @@ fixable = ["ALL"]
 "**/conftest.py" = ["ARG001"]
 
 [tool.ruff.format]
-docstring-code-line-length = 120
+docstring-code-line-length = 100
 docstring-code-format = true
